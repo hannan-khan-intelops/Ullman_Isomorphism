@@ -9,11 +9,18 @@ class Graph(NXGraph):
     """docstring for Graph"""
     def __init__(self):
         super(Graph, self).__init__()
+        self.num_nodes = len(self.nodes())
+        self.num_edges = len(self.edges())
+        self.nodelist = sorted(self.nodes())
+        self.node_ids = Series(self.nodelist, index=range(self.num_nodes))
+        self.node_id2idx = Series(range(self.num_nodes), index=self.nodelist)
+        self.node_labels = Series([self.node[nid]['label'] for nid in self.nodelist], index=self.nodelist)
+        self.node_degrees = Series([self.degree(nid) for nid in self.nodelist], index=self.nodelist)
 
     def from_graph_str(self, graph_str, as_int=False, invalid_gid='-1'):
-        '''
+        """
         return True if the graph data format is ok
-        '''
+        """
         trans_func = lambda v : v
         if as_int:
             trans_func = lambda v : int(v)
@@ -43,21 +50,21 @@ class Graph(NXGraph):
             self.edge_labels.index = self.nodelist
             self.edge_labels.columns = self.nodelist
             return True
-        except Exception, e:
-            print e
-            print 'Wrong graph data format'
+        except Exception as e:
+            print(e)
+            print('Wrong graph data format')
             return False
 
     def get_adjacency_matrix(self):
-        a = nx.adjacency_matrix(self, nodelist=self.nodelist)
+        a = nx.adjacency_matrix(self)
         self.adj_mat = a.toarray()
         return self.adj_mat
 
 
 def read_graphs(file_name):
-    '''
+    """
     one file has multiple graphs
-    '''
+    """
     with open(file_name) as fin:
         content = fin.read()
         graph_strs = content.split('t')

@@ -1,7 +1,7 @@
 import sys, collections, copy, re
 from networkx.algorithms import isomorphism as iso
 
-from UllmanAlgorithm import *
+from ullman_algorithm import *
 from Graph import *
 
 data_dir = './data/graphDB/'
@@ -42,12 +42,11 @@ for gi in range(10):
             num_unmatched += unmatched
 
         if unmatched:
-            print gi, qi,
-            print '\t|\tNX iso =', gm.subgraph_is_isomorphic(),
+            print(gi, qi)
+            print('\t|\tNX iso =', gm.subgraph_is_isomorphic())
             if cmp_method == 'has_iso':
-                print '\t|\tUA iso =', ua_res, '\t|\thas iso UA==NX :', False,
+                print('\t|\tUA iso =', ua_res, '\t|\thas iso UA==NX :', False)
             else:
-                print '\t|\tUA #iso =', len(ua.mappings), '\t|\t NX #iso = ', len(nx_mappings), '\t|\tmapping U==NX :', False,
-            print ''
+                print('\t|\tUA #iso =', len(ua.mappings), '\t|\t NX #iso = ', len(nx_mappings), '\t|\tmapping U==NX :', False)
 
-print '\nNum of unmatched:', num_unmatched
+print('\nNum of unmatched:', num_unmatched)
