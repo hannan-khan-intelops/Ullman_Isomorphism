@@ -9,13 +9,14 @@ class Graph(NXGraph):
     """docstring for Graph"""
     def __init__(self):
         super(Graph, self).__init__()
-        self.num_nodes = len(self.nodes())
-        self.num_edges = len(self.edges())
-        self.nodelist = sorted(self.nodes())
-        self.node_ids = Series(self.nodelist, index=range(self.num_nodes))
-        self.node_id2idx = Series(range(self.num_nodes), index=self.nodelist)
-        self.node_labels = Series([self.node[nid]['label'] for nid in self.nodelist], index=self.nodelist)
-        self.node_degrees = Series([self.degree(nid) for nid in self.nodelist], index=self.nodelist)
+        # self.num_nodes = len(self.nodes())
+        # self.num_edges = len(self.edges())
+        # self.nodelist = sorted(self.nodes())
+        # self.node_ids = Series(self.nodelist, index=range(self.num_nodes))
+        # self.node_id2idx = Series(range(self.num_nodes), index=self.nodelist)
+        # self.node_labels = Series([self.node[nid]['label'] for nid in self.nodelist], index=self.nodelist)
+        # print(f"{self.node_labels = }")
+        # self.node_degrees = Series([self.degree(nid) for nid in self.nodelist], index=self.nodelist)
 
     def from_graph_str(self, graph_str, as_int=False, invalid_gid='-1'):
         """

@@ -41,10 +41,9 @@ class UllmanAlgorithm(object):
         #                         self.q.node_degrees.values[:, None] <= self.g.node_degrees.values)
         # the above code is equivalent to the following
         self.M = np.zeros((self.number_of_nodes_q, self.number_of_nodes_g))
-        for i, nid_q in enumerate(self.q.nodelist):
-            for j, nid_g in enumerate(self.g.nodelist):
-                if self.q.node_labels[nid_q] == self.g.node_labels[nid_g] and self.q.degree(nid_q) <= self.g.degree(
-                        nid_g):
+        for i, nid_q in enumerate(sorted(self.q.nodes())):
+            for j, nid_g in enumerate(sorted(self.g.nodes())):
+                if self.q.degree(nid_q) <= self.g.degree(nid_g):
                     self.M[i, j] = 1
 
         self.M = self.M.astype(int)
@@ -104,7 +103,7 @@ class UllmanAlgorithm(object):
             if self.display_M:
                 print(self.M)
             if self.display_mapping:
-                print(self.mappings[-1])
+                print(f"mappings: {list(self.mappings[-1])}")
         return isomorphic
 
     def _get_mapping(self, M_idx=None):
@@ -157,7 +156,7 @@ class UllmanAlgorithm(object):
 
 if __name__ == "__main__":
     # create a directed tree graph.
-    tree_1 = Graph()
+    tree_1 = nx.Graph()
     tree_1.add_nodes_from([1, 2, 3, 4, 5, 6])
     tree_1.add_edge(1, 2)
     tree_1.add_edge(1, 3)
@@ -165,8 +164,17 @@ if __name__ == "__main__":
     tree_1.add_edge(2, 5)
     tree_1.add_edge(5, 6)
     tree_2 = tree_1.copy()
-    # tree_2.remove_node(6)
+    tree_2.remove_node(6)
+    tree_2.remove_node(5)
+
+    tree_3 = nx.Graph()
+    tree_3.add_nodes_from([100, 200, 300])
+    tree_3.add_edge(100, 200)
+    tree_3.add_edge(100, 300)
 
     ua = UllmanAlgorithm()
-    ua.run(tree_2, tree_1, display_M=True, display_mapping=True)
-    print(ua.has_iso(tree_2, tree_1))
+    ua.run(tree_2, tree_1, display_M=True, display_mapping=False)
+    print(ua.has_iso(tree_1, tree_2))
+
+    ua.run(tree_3, tree_1, display_M=True, display_mapping=False)
+    print(ua.has_iso(tree_3, tree_1))
